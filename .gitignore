@@ -1,0 +1,7 @@
+# created by virtualenv automatically
+Lib/
+Scripts/
+cartoonset10k/
+normal_dataset/
+pyvenv.cfg
+

@@ -1,0 +1,52 @@
+import torch
+import torch.nn as nn
+import numpy as np
+import os
+from torchvision import transforms
+from torch.utils.data import DataLoader,Dataset
+from discriminator import Discriminator
+from generator import Generator
+import cv2 as cv
+
+def generate_noise():
+    num=np.random.normal(0,1,100)
+    num=(num-np.min(num))/(np.max(num)-np.min(num))
+
+    return num
+
+transform=transforms.Compose([
+    transforms.Grayscale(num_output_channels=1),
+    transfroms.ToTensor()
+])
+
+dataset_path="C:\\programs\\GAN\\venv\\cartoonset10k"
+
+class Cartoon(Dataset):
+
+    def __init__(self,transform,dataset_path):
+       self.path=dataset_path
+       self.transform=transform
+       self.image_paths= [os.path.join(self.path, fname)
+                            for fname in os.listdir(self.path)
+                            if fname.lower().endswith(('.png', '.jpg', '.jpeg'))]
+
+    def __len__(self):
+        return len(self.image_paths)
+
+    def __getitem__(self,idx):
+        img_path=self.image_paths[idx]
+        img=cv.imread(img_path)
+        img=cv.cvtColor(img,cv.COLOR_BGR2RGB)
+
+        if self.transform:
+            self.transform(img)
+
+        return img
+
+cartoon_dataset=Cartoon(transform,dataset_path)
+
+batch_images=DataLoader(dataset=cartoon_dataset,batch_size=1000,shuffle=True)
+
+
+
+
