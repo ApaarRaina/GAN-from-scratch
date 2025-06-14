@@ -3,7 +3,7 @@ import numpy as np
 from PIL import Image
 from tqdm import tqdm
 
-def create_normal_image(mean=128, std=20, size=(500, 500)):
+def create_normal_image(mean=128, std=20, size=100):
     # Generate normally distributed pixels
     img_array = np.random.normal(loc=mean, scale=std, size=size)
 
