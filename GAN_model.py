@@ -58,13 +58,7 @@ class Noise(Dataset):
             img=self.transform(img)
 
         return torch.flatten(img)
-
-
-class GAN_loss(nn.Module):
-
-    def __init__(self):
-        super(GAN_loss,self).__init__()
-        pass
+        
 
 transform=transforms.Compose([
     transforms.Grayscale(num_output_channels=1),
@@ -84,10 +78,23 @@ generator=Generator(100)
 
 discrminator=Discriminator()
 
-epochs=30
-
 generator.train()
 discrminator.train()
+
+generated_imgs=generator(noise_arrays)
+
+criterion=nn.BCELoss()
+real_labels=torch.ones(100,1)
+fake_labels=torch.ones(100,1)
+
+real_output=torch.argmax(discriminator(cartoon_images))
+fake_output=torch.argmax(discriminator(generated_imgs))
+
+d_loss_real=criterion(real_output,real_labels)
+d_loss_fake=criterion(fake_output,fake_labels)
+
+d_loss=d_loss_fake+d_loss_real
+
 
 
 
