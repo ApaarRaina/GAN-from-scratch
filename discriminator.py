@@ -8,13 +8,11 @@ class Discriminator(nn.Module):
 
         self.conv_layers=nn.Sequential(
              nn.Conv2d(in_channels=1,out_channels=3,kernel_size=4,stride=2),
-             nn.MaxPool2d(kernel_size=4,stride=2),
+             nn.MaxPool2d(kernel_size=2,stride=2),
              nn.Conv2d(in_channels=3,out_channels=5,kernel_size=4,stride=2),
-             nn.MaxPool2d(kernel_size=4, stride=2),
-             nn.Conv2d(in_channels=5,out_channels=8,kernel_size=4,stride=2),
-             nn.MaxPool2d(kernel_size=4, stride=2),
-             nn.Conv2d(in_channels=8,out_channels=12,kernel_size=5,stride=2),
-             nn.MaxPool2d(kernel_size=5, stride=2)
+             nn.MaxPool2d(kernel_size=2, stride=2),
+             nn.Conv2d(in_channels=5,out_channels=8,kernel_size=3,stride=2),
+             nn.MaxPool2d(kernel_size=2, stride=2),
         )
 
         # Dummy pass to get flattened feature size
@@ -37,7 +35,7 @@ class Discriminator(nn.Module):
     def forward(self,img):
 
         features=self.conv_layers(img)
-        features=features.view(img.shape(0),-1)
+        features=features.view(img.shape[0],-1)
         label=self.net(features)
 
         return label

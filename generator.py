@@ -11,11 +11,11 @@ class Generator(nn.Module):
 
         self.net=nn.Sequential(
             nn.Linear(in_features,300),
-            nn.Relu(),
+            nn.ReLU(),
             nn.Linear(300,500),
-            nn.Relu(),
+            nn.ReLU(),
             nn.Linear(500,900),
-            nn.Relu()
+            nn.ReLU()
         )
 
         self.conv_layers=nn.Sequential(
@@ -28,10 +28,11 @@ class Generator(nn.Module):
     def forward(self,noise):
 
         flat=self.net(noise)
-        initial_img=flat.view(flat,(30,30))
+        initial_img=flat.view(100,1,30,30)
         generated_img=self.conv_layers(initial_img)
-        generated_img=generated_img
+        combined_img = torch.sum(generated_img, dim=1, keepdim=True)
+        combined_img/=torch.max(combined_img)
 
-        return generated_img
+        return combined_img
 
 

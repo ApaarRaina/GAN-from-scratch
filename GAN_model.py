@@ -76,24 +76,55 @@ noise_arrays=DataLoader(dataset=noise_dataset,batch_size=100,shuffle=True)
 
 generator=Generator(100)
 
-discrminator=Discriminator()
+discriminator=Discriminator()
 
 generator.train()
-discrminator.train()
+discriminator.train()
 
-generated_imgs=generator(noise_arrays)
 
+epochs=30
 criterion=nn.BCELoss()
-real_labels=torch.ones(100,1)
-fake_labels=torch.ones(100,1)
+optimizer_d=torch.optim.AdamW(discriminator.parameters(),lr=0.001)
+optimizer_g=torch.optim.AdamW(generator.parameters(),lr=0.001)
 
-real_output=torch.argmax(discriminator(cartoon_images))
-fake_output=torch.argmax(discriminator(generated_imgs))
+for i in range(epochs):
 
-d_loss_real=criterion(real_output,real_labels)
-d_loss_fake=criterion(fake_output,fake_labels)
+    for j,(cartoon_image,noise_array) in enumerate(zip(cartoon_images,noise_arrays)):
 
-d_loss=d_loss_fake+d_loss_real
+           generated_imgs=generator(noise_array)
+           real_labels=torch.ones(100,1)
+           fake_labels=torch.zeros(100,1)
+
+           real_output=torch.max(discriminator(cartoon_image),dim=1)[0].unsqueeze(1)
+           fake_output=torch.max(discriminator(generated_imgs.detach()),dim=1)[0].unsqueeze(1)
+
+           d_loss_real=criterion(real_output,real_labels)
+           d_loss_fake=criterion(fake_output,fake_labels)
+
+           d_loss=d_loss_fake+d_loss_real
+
+           print(f"The discrminator loss is {d_loss.item()} at epoch {i}")
+
+           optimizer_d.zero_grad()
+           d_loss.backward()
+           optimizer_d.step()
+
+           if i!=0 and i%6==0:
+               g_output=torch.argmax(discriminator(generated_imgs))
+               g_loss=criterion(g_output,real_labels)
+
+               print(f"The generator loss is {g_loss.item()} at epoch {i}")
+
+               optimizer_g.zero_grad()
+               g_loss.backward()
+               optimizer_g.step()
+
+
+
+
+
+
+
 
 
 
