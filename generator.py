@@ -10,29 +10,26 @@ class Generator(nn.Module):
         super().__init__()
 
         self.net=nn.Sequential(
-            nn.Linear(in_features,300),
+            nn.Linear(in_features,150),
             nn.ReLU(),
-            nn.Linear(300,500),
+            nn.Linear(150,200),
             nn.ReLU(),
-            nn.Linear(500,900),
+            nn.Linear(200,225),
             nn.ReLU()
         )
 
         self.conv_layers=nn.Sequential(
-            nn.ConvTranspose2d(in_channels=1,out_channels=6,kernel_size=4,stride=2),
-            nn.ConvTranspose2d(in_channels=6,out_channels=8,kernel_size=4,stride=2),
-            nn.ConvTranspose2d(in_channels=8,out_channels=12,kernel_size=4,stride=2),
-            nn.ConvTranspose2d(in_channels=12,out_channels=18,kernel_size=5,stride=2)
+            nn.ConvTranspose2d(1, 6, kernel_size=4, stride=2, padding=1),
+            nn.ConvTranspose2d(6, 8, kernel_size=4, stride=2, padding=1),
+            nn.ConvTranspose2d(8, 4, kernel_size=4, stride=2, padding=1),
+            nn.ConvTranspose2d(4, 1, kernel_size=9, stride=1, padding=0)
         )
 
     def forward(self,noise):
 
         flat=self.net(noise)
-        initial_img=flat.view(100,1,30,30)
+        batch_size = noise.size(0)
+        initial_img=flat.view(batch_size,1,15,15)
         generated_img=self.conv_layers(initial_img)
-        combined_img = torch.sum(generated_img, dim=1, keepdim=True)
-        combined_img/=torch.max(combined_img)
 
-        return combined_img
-
-
+        return generated_img
