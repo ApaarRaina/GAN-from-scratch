@@ -4,9 +4,14 @@ import numpy as np
 import os
 from torchvision import transforms
 from torch.utils.data import DataLoader, Dataset
+from generator import Generator
+from discriminator import Discriminator
 import cv2 as cv
 from PIL import Image
 
+
+cartoon_path="C:\\programs\\GAN\\venv\\cartoonset10k"
+normal_path="C:\\programs\\GAN\\venv\\normal_dataset"
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("Running on", device)
@@ -75,8 +80,8 @@ noise_path = normal_path
 cartoon_dataset = Cartoon(transform_cartoon, dataset_path)
 noise_dataset = Noise(noise_path, transform_noise)
 
-cartoon_images = DataLoader(dataset=cartoon_dataset, batch_size=1000, shuffle=True,num_workers=2,drop_last=True,pin_memory=True)
-noise_arrays = DataLoader(dataset=noise_dataset, batch_size=1000, shuffle=True,num_workers=2,drop_last=True,pin_memory=True)
+cartoon_images = DataLoader(dataset=cartoon_dataset, batch_size=1000, shuffle=True,drop_last=True)
+noise_arrays = DataLoader(dataset=noise_dataset, batch_size=1000, shuffle=True,drop_last=True)
 
 
 generator = Generator(100).to(device)
