@@ -19,10 +19,10 @@ class Generator(nn.Module):
         )
 
         self.conv_layers=nn.Sequential(
-            nn.ConvTranspose2d(1, 6, kernel_size=4, stride=2, padding=1),
-            nn.ConvTranspose2d(6, 8, kernel_size=4, stride=2, padding=1),
-            nn.ConvTranspose2d(8, 4, kernel_size=4, stride=2, padding=1),
-            nn.ConvTranspose2d(4, 1, kernel_size=9, stride=1, padding=0)
+            nn.ConvTranspose2d(1, 32, kernel_size=4, stride=2, padding=1),
+            nn.ConvTranspose2d(32, 64, kernel_size=4, stride=2, padding=1),
+            nn.ConvTranspose2d(64, 32, kernel_size=4, stride=2, padding=1),
+            nn.ConvTranspose2d(32, 1, kernel_size=9, stride=1, padding=0)
         )
 
     def forward(self,noise):
