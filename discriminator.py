@@ -7,8 +7,8 @@ class Discriminator(nn.Module):
         super().__init__()
 
         self.conv_layers=nn.Sequential(
-             nn.Conv2d(in_channels=1,out_channels=3,kernel_size=4,stride=2),
-             nn.Conv2d(in_channels=3,out_channels=5,kernel_size=4,stride=2),
+             nn.Conv2d(in_channels=1,out_channels=3,kernel_size=3,stride=1),
+             nn.Conv2d(in_channels=3,out_channels=5,kernel_size=3,stride=1),
              nn.MaxPool2d(kernel_size=2, stride=2)
         )
 

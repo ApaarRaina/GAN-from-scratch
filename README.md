@@ -26,9 +26,20 @@ They are trained simultaneously in a **minimax game** where:
 
 ## How to Run
 
+This implementation trains the GAN on the **MNIST** dataset.
+
+To get the random noise dataset run this script:
+
+```bash
+python custom_dataset.py
+```
+
 To train the GAN model, simply run the following script:
 
 ```bash
 python GAN_model.py
+```
+
+
 
 

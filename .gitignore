@@ -3,5 +3,6 @@ Lib/
 Scripts/
 cartoonset10k/
 normal_dataset/
+content/
 pyvenv.cfg
 
