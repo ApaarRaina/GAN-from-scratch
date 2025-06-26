@@ -10,26 +10,26 @@ class Generator(nn.Module):
         super().__init__()
 
         self.net=nn.Sequential(
-            nn.Linear(in_features,150),
+            nn.Linear(in_features,30),
             nn.ReLU(),
-            nn.Linear(150,200),
+            nn.Linear(30,50),
             nn.ReLU(),
-            nn.Linear(200,225),
+            nn.Linear(50,64),
             nn.ReLU()
         )
 
         self.conv_layers=nn.Sequential(
             nn.ConvTranspose2d(1, 32, kernel_size=4, stride=2, padding=1),
-            nn.ConvTranspose2d(32, 64, kernel_size=4, stride=2, padding=1),
-            nn.ConvTranspose2d(64, 32, kernel_size=4, stride=2, padding=1),
-            nn.ConvTranspose2d(32, 1, kernel_size=9, stride=1, padding=0)
-        )
+            nn.ConvTranspose2d(32, 16, kernel_size=4, stride=2, padding=1),
+            nn.ConvTranspose2d(16, 1, kernel_size=3, stride=1, padding=0),
+            nn.Conv2d(in_channels=1, out_channels=1, kernel_size=5, stride=1, padding=0)
+         )
 
     def forward(self,noise):
 
         flat=self.net(noise)
         batch_size = noise.size(0)
-        initial_img=flat.view(batch_size,1,15,15)
+        initial_img=flat.view(batch_size,1,8,8)
         generated_img=self.conv_layers(initial_img)
 
         return generated_img
