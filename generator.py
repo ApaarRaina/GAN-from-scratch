@@ -12,19 +12,24 @@ class Generator(nn.Module):
 
         self.net=nn.Sequential(
             nn.Linear(in_features,64*10*10),
-            nn.LeakyReLU(0.2),
+            nn.ReLU(),
             nn.Unflatten(1,(64,10,10)),
             nn.ConvTranspose2d(64, 32, kernel_size=3, stride=2,padding=0),
-            nn.LeakyReLU(0.2),
+            nn.BatchNorm2d(32),
+            nn.ReLU(),
             nn.ConvTranspose2d(32, 16, kernel_size=3, stride=1,padding=0),
-            nn.LeakyReLU(0.2),
-            nn.ConvTranspose2d(16, 1, kernel_size=3, stride=1,padding=0),
+            nn.BatchNorm2d(16),
+            nn.ReLU(),
+            nn.ConvTranspose2d(16, 8, kernel_size=3, stride=1,padding=0),
+            nn.BatchNorm2d(8),
+            nn.ReLU(),
+            nn.ConvTranspose2d(8, 1, kernel_size=3, stride=1),
             nn.Tanh()
         )
 
     def forward(self,noise):
 
         generated_img=self.net(noise)
-        generated_img=F.interpolate(generated_img,(30,30))
+        generated_img=F.interpolate(generated_img,(28,28))
 
         return generated_img

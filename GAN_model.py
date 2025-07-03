@@ -6,17 +6,14 @@ from torchvision import transforms
 from torch.utils.data import DataLoader, Dataset
 import cv2 as cv
 from PIL import Image
+from discriminator import Discriminator
+from generator import Generator
+
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("Running on", device)
 
-
-def create_latent_vector(latent_dim=20):
-    return np.random.normal(0, 1, latent_dim).astype(np.float32)
-
-
 transform_mnist = transforms.Compose([
-    transforms.Resize((30, 30)),
     transforms.Grayscale(num_output_channels=1),
     transforms.ToTensor(),
     transforms.Normalize((0.5,), (0.5,))
@@ -24,29 +21,29 @@ transform_mnist = transforms.Compose([
 
 mnist_dataset = datasets.MNIST(root='./content/mnist', train=False, transform=transform_mnist, download=True)
 
-mnist_imgs = DataLoader(dataset=mnist_dataset, batch_size=1000, shuffle=True, drop_last=True)
+mnist_imgs = DataLoader(dataset=mnist_dataset, batch_size=500, shuffle=True, drop_last=True)
 
 generator = Generator(100).to(device)
 discriminator = Discriminator().to(device)
 
-generator.load_state_dict(torch.load("/content/generator.pth", map_location=device))
-discriminator.load_state_dict(torch.load("/content/discriminator.pth", map_location=device))
+generator.load_state_dict(torch.load("generator.pth", map_location=device))
+discriminator.load_state_dict(torch.load("discriminator.pth", map_location=device))
 
 generator.train()
 discriminator.train()
 
-epochs = 20
+epochs = 10
 criterion = nn.BCELoss()
-optimizer_d = torch.optim.Adam(discriminator.parameters(), lr=0.0004)
-optimizer_g = torch.optim.Adam(generator.parameters(), lr=0.0002)
+optimizer_d = torch.optim.Adam(discriminator.parameters(), lr=0.00008, betas=(0.5, 0.9))
+optimizer_g = torch.optim.Adam(generator.parameters(), lr=0.0002, betas=(0.5, 0.9))
 
-k = 1
+k = 6
 for i in range(epochs):
     batch_no = 0
     for j, (mnist_img, _) in enumerate(mnist_imgs):
 
         mnist_img = mnist_img.to(device)
-        noise_array = noise = torch.randn(1000, 100, device=device).to(device)
+        noise_array = torch.randn(500, 100, device=device)
         generated_imgs = generator(noise_array)
         batch_size = mnist_img.size(0)
 
@@ -66,7 +63,7 @@ for i in range(epochs):
         d_loss.backward()
         optimizer_d.step()
 
-        for j in range(k):
+        for r in range(k):
             generated_imgs = generator(noise_array)
             g_output = discriminator(generated_imgs)
             g_loss = criterion(g_output, real_labels)
@@ -76,5 +73,7 @@ for i in range(epochs):
             optimizer_g.zero_grad()
             g_loss.backward()
             optimizer_g.step()
+
+            noise_array = torch.randn(500, 100, device=device)
 
         batch_no += 1

@@ -1,7 +1,7 @@
 # GAN-from-scratch
 
-This repository contains a from-scratch implementation of a **Generative Adversarial Network (GAN)** using **PyTorch**, based on the original 2014 paper:  
-**[Generative Adversarial Nets (Goodfellow et al.)](https://arxiv.org/pdf/1406.2661)**.
+This repository contains an implementation of a **Deep Convolution Generative Adversarial Network (DCGAN)** using **PyTorch**, based on the original 2014 paper:  
+**[Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks](https://arxiv.org/abs/1511.06434)**.
 
 ## What is a GAN?
 
@@ -39,6 +39,13 @@ To train the GAN model, simply run the following script:
 ```bash
 python GAN_model.py
 ```
+
+To test the trained GAN model run:
+
+```bash
+python test.py
+```
+
 
 
 
