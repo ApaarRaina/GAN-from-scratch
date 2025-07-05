@@ -1,8 +1,6 @@
 # GAN-from-scratch
 
-This repository contains an implementation of a **Deep Convolution Generative Adversarial Network (DCGAN)** using **PyTorch**, based on the original 2014 paper:  
-**[Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks](https://arxiv.org/abs/1511.06434)**.
-
+This repository contains an implementation of a **Deep Convolution Generative Adversarial Network (DCGAN)** using **PyTorch**:
 ## What is a GAN?
 
 A **Generative Adversarial Network** consists of two competing neural networks:
