@@ -54,7 +54,7 @@ E_{z ~ p_z(z)} [log(D(G(z)))]
 
 ## How to Run
 
-This implementation trains the GAN on the **MNIST** dataset. (The test one)
+This implementation trains the GAN on the **MNIST** dataset.
 
 
 To train the GAN model, simply run the following script:

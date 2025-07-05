@@ -13,8 +13,7 @@ print("Running on", device)
 generator = Generator(100).to(device)
 generator.load_state_dict(torch.load("generator.pth", map_location=device))
 
-
-latent_vector = noise = torch.randn(1, 100, device=device).to(device)
+latent_vector = noise = torch.randn(1, 100, device=device)
 
 
 generator.eval()
@@ -25,9 +24,11 @@ with torch.no_grad():
 output_img = generated_image.squeeze().cpu().numpy()
 
 # Plot
-plt.figure(figsize=(10, 10))
+plt.figure(figsize=(6, 6))
 plt.imshow(output_img, cmap='gray')
 plt.axis('off')
 plt.title("Generated Image")
 plt.show()
+
+
 
