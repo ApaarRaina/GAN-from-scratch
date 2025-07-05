@@ -57,11 +57,6 @@ $$ \mathbb{E}_{z \sim p_z(z)}[\log(D(G(z)))] $$
 
 This implementation trains the GAN on the **MNIST** dataset. (The test one)
 
-To get the random noise dataset run this script:
-
-```bash
-python custom_dataset.py
-```
 
 To train the GAN model, simply run the following script:
 
