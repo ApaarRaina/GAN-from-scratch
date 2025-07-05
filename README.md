@@ -19,14 +19,43 @@ They are trained simultaneously in a **minimax game** where:
 ## Paper Reference
 
 > **Generative Adversarial Nets**  
-> Ian Goodfellow, Jean Pouget-Abadie, Mehdi Mirza, Bing Xu, David Warde-Farley, Sherjil Ozair, Aaron Courville, Yoshua Bengio  
+> Ian Goodfellow et al  
 > [arXiv:1406.2661](https://arxiv.org/pdf/1406.2661)
 
+> **DC-GAN**  
+> Radford et al
+> https://arxiv.org/abs/1511.06434
 ---
+
+## Math
+
+Generative Adversarial Networks (GANs) involve two neural networks:
+
+Generator G(z): Maps a noise vector z~p(z) to data space(image)
+Discriminator D(x): Tries to distinguish between read data x~p(x) and generated samples G(x)
+
+These two nets play a minmax game
+$$
+\min_G \max_D \; V(D, G) = \mathbb{E}_{x \sim p_{\text{data}}}[\log D(x)] + \mathbb{E}_{z \sim p_z(z)}[\log(1 - D(G(z)))]
+$$
+
+The discriminator D maximises this: It wants to classify real data as real
+
+The Generator G minimises this: It wants fake data G(z) to fool D to think it is real
+
+To do this in practice we employ the BCEloss function.
+
+This also creates a problem where the genarator while trying to minimise this loss $$ \mathbb{E}_{z \sim p_z(z)}[\log(1 - D(G(z)))] $$
+It creates a vansihing gradient problem when D(G(z))~0 that means when the discriminator is good.
+To prevent this we make the generator maximise this probability
+$$ \mathbb{E}_{z \sim p_z(z)}[\log(D(G(z)))] $$
+
+
+
 
 ## How to Run
 
-This implementation trains the GAN on the **MNIST** dataset.
+This implementation trains the GAN on the **MNIST** dataset. (The test one)
 
 To get the random noise dataset run this script:
 
