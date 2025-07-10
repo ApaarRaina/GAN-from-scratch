@@ -28,6 +28,9 @@ plt.figure(figsize=(6, 6))
 plt.imshow(output_img, cmap='gray')
 plt.axis('off')
 plt.title("Generated Image")
+
+plt.savefig("Result")
+
 plt.show()
 
 
