@@ -2,10 +2,12 @@ import torch
 import torch.nn as nn
 import numpy as np
 import os
-from torchvision import transforms
+from torchvision import transforms,datasets
 from torch.utils.data import DataLoader, Dataset
 import cv2 as cv
 from PIL import Image
+from models.generator import Generator
+from models.discriminator import Discriminator
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("Running on", device)
